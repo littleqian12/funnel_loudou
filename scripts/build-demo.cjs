@@ -25,6 +25,8 @@ html = html
   .replaceAll('static/app.js', `static/app.js?v=${ASSET_VERSION}`)
   .replaceAll('miniprogram/lib/core.js', `miniprogram/lib/core.js?v=${ASSET_VERSION}`);
 
+html = html.replace('</body>', '<script>document.addEventListener("DOMContentLoaded",()=>document.getElementById("demo-notice")?.remove());</script>\n</body>');
+
 if (!html.includes('FUNNEL_DEMO_AUTO')) throw new Error('index.html script anchor not found');
 fs.writeFileSync(path.join(out, 'index.html'), html);
 
