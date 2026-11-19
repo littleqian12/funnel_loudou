@@ -10,15 +10,20 @@ fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(path.join(out, 'static'), { recursive: true });
 fs.mkdirSync(path.join(out, 'miniprogram', 'lib'), { recursive: true });
 
+const ASSET_VERSION = '20261120c';
 const sourceHtml = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const demoScripts = [
   '<script>window.FUNNEL_DEMO_AUTO = true;</script>',
-  '<script src="static/demo-data.js"></script>',
-  '<script src="static/demo.js"></script>'
+  `<script src="static/demo-data.js?v=${ASSET_VERSION}"></script>`,
+  `<script src="static/demo.js?v=${ASSET_VERSION}"></script>`
 ].join('');
-const html = sourceHtml
+let html = sourceHtml
   .replace('<title>漏斗 · 给收藏一个出口</title>', '<title>漏斗 Funnel · 收藏去化演示</title>')
   .replace('<script src="miniprogram/lib/core.js"></script>', demoScripts + '<script src="miniprogram/lib/core.js"></script>');
+html = html
+  .replaceAll('static/style.css', `static/style.css?v=${ASSET_VERSION}`)
+  .replaceAll('static/app.js', `static/app.js?v=${ASSET_VERSION}`)
+  .replaceAll('miniprogram/lib/core.js', `miniprogram/lib/core.js?v=${ASSET_VERSION}`);
 
 if (!html.includes('FUNNEL_DEMO_AUTO')) throw new Error('index.html script anchor not found');
 fs.writeFileSync(path.join(out, 'index.html'), html);
