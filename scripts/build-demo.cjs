@@ -23,6 +23,14 @@ const html = sourceHtml
 if (!html.includes('FUNNEL_DEMO_AUTO')) throw new Error('index.html script anchor not found');
 fs.writeFileSync(path.join(out, 'index.html'), html);
 
+// A no-setup preview for htmlpreview.github.io. The <base> makes the relative
+// assets resolve through jsDelivr instead of the htmlpreview origin.
+const previewHtml = html.replace(
+  '<head>',
+  '<head><base href="https://cdn.jsdelivr.net/gh/littleqian12/funnel_loudou@main/docs/">'
+);
+fs.writeFileSync(path.join(out, 'preview.html'), previewHtml);
+
 for (const file of ['static/style.css', 'static/app.js', 'static/demo-data.js', 'static/demo.js', 'miniprogram/lib/core.js']) {
   fs.copyFileSync(path.join(root, file), path.join(out, file));
 }
