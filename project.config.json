@@ -1,0 +1,9 @@
+{
+  "description": "漏斗 · 个人收藏消化工具",
+  "miniprogramRoot": "miniprogram/",
+  "compileType": "miniprogram",
+  "appid": "touristappid",
+  "projectname": "funnel",
+  "setting": { "es6": true, "minified": true, "urlCheck": true, "postcss": true },
+  "packOptions": { "ignore": [] }
+}

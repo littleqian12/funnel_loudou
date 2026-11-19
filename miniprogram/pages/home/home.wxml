@@ -1,0 +1,32 @@
+<view class="page">
+  <view class="eyebrow">FUNNEL · 只处理，不囤积</view>
+  <view class="title">给收藏一个出口。</view>
+  <view class="subtitle">今天读一点，或者安心放走一点。</view>
+  <view wx:if="failed" class="card"><view>本地数据暂时无法读取，未覆盖原数据。</view><button class="btn" bindtap="rawBackup">导出原始数据</button><button class="btn secondary" bindtap="refresh">重试</button><button class="btn danger" bindtap="clear">备份后清空并重新开始</button></view>
+  <block wx:else>
+    <view class="tabs"><view class="tab {{tab === 'queue' ? 'on' : ''}}" data-tab="queue" bindtap="tab">队列</view><view class="tab {{tab === 'history' ? 'on' : ''}}" data-tab="history" bindtap="tab">已处理</view><view class="tab {{tab === 'stats' ? 'on' : ''}}" data-tab="stats" bindtap="tab">统计</view><view class="tab {{tab === 'me' ? 'on' : ''}}" data-tab="me" bindtap="tab">我的</view></view>
+    <block wx:if="tab === 'queue'">
+      <button class="btn" bindtap="add">＋ 导入收藏</button>
+      <view wx:if="!stats.total" class="card empty">还没有收藏。<view>复制一条文章或视频链接，开始第一次预约。</view></view>
+      <view wx:if="overdue.length" class="section danger">到期了，做个决定 · {{overdueTotal}}</view>
+      <view wx:for="overdue" wx:key="id" class="card" data-id="{{item.id}}" bindtap="detail"><view class="badge">{{item.source}}</view><view class="badge danger">{{item.timing}}</view><view class="item-title">{{item.title}}</view><view class="muted">{{item.reason}}</view></view>
+      <button wx:if="overdueTotal > overdue.length" class="btn secondary" bindtap="more">加载更多到期内容</button>
+      <view wx:if="stats.total" class="section">今日队列 · {{queue.length}} / 3</view>
+      <view wx:if="stats.total &amp;&amp; !queue.length" class="empty">{{overdue.length ? '先处理到期内容，或导入新的预约。' : '今天的队列已经清空。'}}</view>
+      <view wx:for="queue" wx:key="id" class="card" data-id="{{item.id}}" bindtap="detail"><view class="badge">{{item.source}}</view><view class="badge">{{item.timing}}</view><view class="item-title">{{item.title}}</view><view class="muted">{{item.reason}}</view></view>
+      <view wx:if="archive.length" class="section">稍后处理 · {{archiveTotal}}</view>
+      <view wx:for="archive" wx:key="id" class="card" data-id="{{item.id}}" bindtap="detail"><view class="badge">{{item.source}}</view><view class="badge">{{item.timing}}</view><view class="item-title">{{item.title}}</view></view>
+      <button wx:if="archiveTotal > archive.length" class="btn secondary" bindtap="more">加载更多存档</button>
+    </block>
+    <block wx:if="tab === 'history'"><view class="section">每一次处理都算数</view><view wx:if="!history.length" class="empty">读完或放走的内容会出现在这里。</view><view wx:for="history" wx:key="id" class="card" data-id="{{item.id}}" bindtap="detail"><view class="badge">{{item.timing}}</view><view class="item-title">{{item.title}}</view><view class="muted">{{item.note}}</view></view><button wx:if="historyTotal > history.length" class="btn secondary" bindtap="more">加载更多已处理内容</button></block>
+    <block wx:if="tab === 'stats'">
+      <view class="card"><view class="muted">累计读完率</view><view class="title">{{stats.rate}}%</view><view class="muted">已读完 {{stats.done}} 条 ÷ 当前全部 {{stats.total}} 条</view></view>
+      <view class="stats"><view class="stat"><view class="number">{{stats.pending}}</view><view class="label">待处理</view></view><view class="stat"><view class="number">{{stats.done}}</view><view class="label">读完</view></view><view class="stat"><view class="number">{{stats.released}}</view><view class="label">放走</view></view></view>
+      <view class="section">内容来自哪里</view><view wx:if="!bySource.length" class="empty">导入内容后，这里会显示真实统计。</view><view class="card" wx:if="bySource.length"><view class="line row" wx:for="bySource" wx:key="name"><text>{{item.name}}</text><text class="muted">读完 {{item.done}} / {{item.total}}</text></view></view><view class="muted spaced">统计只依据你的操作计算。永久删除内容后，统计也会随之更新。</view>
+    </block>
+    <block wx:if="tab === 'me'">
+      <view class="card"><view class="item-title">你的收藏，留在你的设备。</view><view class="muted spaced">无需登录，不上传内容。数据保存在当前微信设备，清缓存、删除小程序或换设备可能丢失；请定期备份。</view></view>
+      <button class="btn secondary" bindtap="backup">导出 JSON 备份</button><button class="btn secondary" bindtap="add">导入内容 / 恢复备份</button><button class="btn secondary" bindtap="privacy">隐私说明与使用帮助</button><button class="btn danger" bindtap="clear">删除全部数据</button>
+    </block>
+  </block>
+</view>

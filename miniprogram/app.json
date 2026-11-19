@@ -1,0 +1,6 @@
+{
+  "pages": ["pages/home/home", "pages/import/import", "pages/detail/detail", "pages/privacy/privacy"],
+  "window": { "navigationBarTitleText": "漏斗", "navigationBarBackgroundColor": "#f5f6f3", "navigationBarTextStyle": "black", "backgroundColor": "#f5f6f3" },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

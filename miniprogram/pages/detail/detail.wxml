@@ -1,0 +1,6 @@
+<view class="page" wx:if="item"><view class="badge">{{item.source}}</view><view class="badge">{{timing}}</view><view class="title">{{item.title}}</view><view class="card"><view class="muted">收藏的理由</view><view class="body">{{item.reason || '未填写'}}</view></view>
+<view wx:if="item.url" class="card"><view class="body" selectable="true">{{item.url}}</view><button class="btn secondary" bindtap="copy">复制原文链接</button><view class="muted">复制后到来源 App 或浏览器打开。这里不加载外部网页。</view></view>
+<view wx:if="item.content" class="card body" selectable="true">{{item.content}}</view>
+<block wx:if="item.status === 'pending'"><view class="field"><text class="field-label">读完后，留下一点收获（可选）</text><textarea maxlength="4000" value="{{note}}" bindinput="note" placeholder="核心观点是什么？准备怎么用？" /></view><button class="btn" data-action="done" bindtap="action">我读完了</button><button class="btn secondary" data-action="released" bindtap="action">放走 · 不再需要</button><button wx:if="!item.extended" class="btn secondary" data-action="extend" bindtap="action">再约 7 天（仅一次）</button></block>
+<block wx:else><view wx:if="item.note" class="card body">{{item.note}}</view><button class="btn secondary" data-action="restore" bindtap="action">重新预约 · 7 天</button></block>
+<button class="btn danger" data-action="delete" bindtap="action">永久删除</button></view>

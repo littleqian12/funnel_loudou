@@ -1,0 +1,8 @@
+<view class="page"><view class="eyebrow">一次预约，一个决定</view><view class="title">把想读的带进来。</view><view class="subtitle">支持公众号链接、小红书与抖音分享文案、多条链接、文字和 JSON 备份。批量链接可每行一条；多段文字用空行分隔。</view>
+<view class="field"><text class="field-label">粘贴内容或备份 JSON</text><textarea maxlength="2000000" value="{{input}}" data-field="input" bindinput="field" placeholder="在来源 App 复制，再长按粘贴到这里" /></view>
+<view class="field"><text class="field-label">标题（可选，仅对单条内容生效）</text><input maxlength="200" value="{{title}}" data-field="title" bindinput="field" placeholder="给这次预约一个容易记住的名字" /></view>
+<view class="field"><text class="field-label">为什么值得读？（恢复备份时可留空）</text><input maxlength="500" value="{{reason}}" data-field="reason" bindinput="field" placeholder="例如：解决我正在遇到的问题" /></view>
+<view class="field"><text class="field-label">计划多久读完？</text><view class="choices"><view wx:for="[3,7,30]" wx:key="*this" class="choice {{days === item ? 'on' : ''}}" data-days="{{item}}" bindtap="days">{{item}} 天</view></view></view>
+<button class="btn secondary" bindtap="preview">检查导入内容</button>
+<view wx:if="count" class="card"><view class="item-title">将新增 {{count}} 条 · 跳过 {{skipped}} 条</view><view class="muted">{{backup ? '备份将保留原有状态和日期，以合并方式恢复。' : '到期后保留内容，由你决定读完、续期或放走。'}}</view><view class="line" wx:for="preview" wx:key="id"><text class="badge">{{item.source}}</text><view>{{item.title}}</view></view><view wx:if="count > 5" class="muted">仅预览前 5 条</view><button class="btn" loading="{{busy}}" disabled="{{busy}}" bindtap="submit">确认导入 {{count}} 条</button></view>
+<view class="muted spaced">只保存你主动提交的内容，不读取平台账号或自动同步收藏。JSON 可使用条目数组，字段为 title、url、reason、content；当前最多保存 1500 条，总备份大小不超过约 900 KB。</view></view>
